@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Train Scheduler</title>
+    <title>Train Scheduler - Admin Page</title>
     <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous'>
     <script src='https://code.jquery.com/jquery-3.4.1.min.js'></script>
     <script src="https://www.gstatic.com/firebasejs/6.5.0/firebase-app.js"></script>
@@ -16,11 +16,14 @@
 </head>
 
 <body>
-    <h2>Current Time - <span id='cTime'></span></h2>
+    <div class="jumbotron text-center">
+        <h2>Train Scheduler - Admin Page</h2>
+        <h2>Current Time - <span id='cTime'></span></h2>
+    </div>
     <form>
         <div class='container text-right'>
             <div class="row">
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                     Train Name
                 </div>
                 <div class="col-sm-2">
@@ -30,32 +33,32 @@
                     Destination
                 </div>
                 <div class="col-sm-2">
-                    <input type='text' class='data' id='tDest'>
+                    <input type='text' class='data' id='tDest' placeholder="Charlotte">
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-2">
-                    First Train Time (Military Time)
+                <div class="col-sm-3">
+                    Start Time (Military Time)
                 </div>
                 <div class="col-sm-2">
-                    <input type='text' class='data' id="tFTime">
+                    <input type='text' class='data' id="tFTime" placeholder="16:50">
                 </div>
                 <div class="col-sm-2">
                     Frequency
                 </div>
                 <div class="col-sm-2">
-                    <input type='text' class='data' id="tFreq">
+                    <input type='text' class='data' id="tFreq" placeholder="13">
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-5 my-4">
+                <div class="col-sm-6 my-4">
                     <input type="submit" value="Add Train" id="addTrain">
                 </div>
             </div>
         </div>
     </form>
     <div class="container">
-        <table id="schedule">
+        <table id="schedule" class='table'>
             <tr>
                 <th>Train Name</th>
                 <th>Destination</th>
