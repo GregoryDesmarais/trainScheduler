@@ -56,28 +56,47 @@ $("#addTrain").click(function(e) {
             tFTime: tFTime,
             tFreq: tFreq
         }
-        db.ref().push(data);
+        db.ref(tName).set(data);
         $("input.data").val("");
     }
 });
 
-
-db.ref().on("child_added", function(childSnap) {
+function buildTable(childSnap) {
+    $("#schedule").empty();
+    var hide = "";
     console.log(childSnap.val());
     var dbVals = childSnap.val();
+    for (x in dbVals) {
+        var trainName = dbVals[x].tName;
+        var trainDestination = dbVals[x].tDest;
+        var trainFirstTime = dbVals[x].tFTime;
+        var trainFreq = dbVals[x].tFreq;
 
-    var trainName = dbVals.tName;
-    var trainDestination = dbVals.tDest;
-    var trainFirstTime = dbVals.tFTime;
-    var trainFreq = dbVals.tFreq;
+        if (location.href.indexOf("admin.html") < 0) {
+            hide = "hide"
+        }
+        var newTR = $("<tr>");
+        newTR.append(`<button class='remove btn ${hide}' data-name=${trainName}>X</button>`);
+        newTR.append(`<td>${trainName}</td>`);
+        newTR.append(`<td>${trainDestination}</td>`);
+        newTR.append(`<td class='firstTime ${hide}'>${trainFirstTime}</td>`);
+        newTR.append(`<td class='freq'>${trainFreq}</td>`);
+        newTR.append(`<td class='nextTrain'></td>`);
+        newTR.append(`<td class='nextTrainMin'></td>`);
+        $("#schedule").append(newTR);
+    }
 
-    var newTR = $("<tr>");
-    newTR.append(`<td>${trainName}</td>`);
-    newTR.append(`<td>${trainDestination}</td>`);
-    newTR.append(`<td class='firstTime'>${trainFirstTime}</td>`);
-    newTR.append(`<td class='freq'>${trainFreq}</td>`);
-    newTR.append(`<td class='nextTrain'></td>`);
-    newTR.append(`<td class='nextTrainMin'></td>`);
-    $("#schedule").append(newTR);
     updateArrivalTime();
+}
+
+db.ref().on("value", function(childSnap) {
+    buildTable(childSnap);
+});
+
+$(document).on("click", ".remove", function() {
+    var name = $(this).attr("data-name");
+    db.ref(name).remove();
+    db.ref().once("value").then(function(childSnap) {
+        buildTable(childSnap);
+    });
 });
