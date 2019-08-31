@@ -20,59 +20,57 @@
         <h2>Train Scheduler - Admin Page</h2>
         <h2>Current Time - <span id='cTime'></span></h2>
     </div>
-    <form>
-        <div class='container text-right'>
-            <div class="row">
-                <div class="col-sm-3">
-                    Train Name
-                </div>
-                <div class="col-sm-2">
-                    <input type='text' class='data' id='tName'>
-                </div>
-                <div class="col-sm-2">
-                    Destination
-                </div>
-                <div class="col-sm-2">
-                    <input type='text' class='data' id='tDest' placeholder="Charlotte">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-3">
-                    Start Time (Military Time)
-                </div>
-                <div class="col-sm-2">
-                    <input type='text' class='data' id="tFTime" placeholder="16:50">
-                </div>
-                <div class="col-sm-2">
-                    Frequency
-                </div>
-                <div class="col-sm-2">
-                    <input type='text' class='data' id="tFreq" placeholder="13">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6 my-4">
-                    <input type="submit" value="Add Train" id="addTrain">
-                </div>
-            </div>
+    <div class="card">
+        <div class="card-header font-weight-bold">
+            Add Train
         </div>
-    </form>
-    <table class='table'>
-        <thead>
-            <tr>
-                <th>Remove</th>
-                <th>Train Name</th>
-                <th>Destination</th>
-                <th>Start Time</th>
-                <th>Arrives every (mins)</th>
-                <th>Next Arrival Time</th>
-                <th>Next Arrival In (mins)</th>
-            </tr>
-        </thead>
-        <tbody id="schedule">
+        <div class="card-body">
+            <form>
+                <div class="form-group">
+                    <label for="tName">Train Name</label>
+                    <input type='text' class='form-control data' id='tName'>
+                </div>
+                <div class="form-group">
+                    <label for="tDest">Destination</label>
+                    <input type='text' class='form-control data' id='tDest' placeholder="Charlotte">
+                </div>
+                <div class="form-group">
+                    <label for="tFTime">Start Time (Military Time)</label>
+                    <input type='text' class='form-control data' id="tFTime" placeholder="16:50">
+                </div>
+                <div class="form-group">
+                    <label for="tFreq">Frequency</label>
+                    <input type='text' class='form-control data' id="tFreq" placeholder="13">
+                </div>
+                <div class="form-group">
+                    <button type="submit" class='btn btn-primary' id="addTrain">Add Train</button>
+                </div>
+        </div>
+        </form>
+    </div>
+    </div>
+    <div class="card">
+        <div class="card-header font-weight-bold">Train Schedule</div>
+        <div class="card-body">
+            <table class='table'>
+                <thead>
+                    <tr>
+                        <th>Remove</th>
+                        <th>Train Name</th>
+                        <th>Destination</th>
+                        <th>Start Time</th>
+                        <th>Arrives every (mins)</th>
+                        <th>Next Arrival Time</th>
+                        <th>Next Arrival In (mins)</th>
+                    </tr>
+                </thead>
+                <tbody id="schedule">
 
-        </tbody>
-    </table>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
 </body>
 <script src="assets/js/code.js"></script>
 

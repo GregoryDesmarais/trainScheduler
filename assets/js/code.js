@@ -1,3 +1,5 @@
+//Firebase confing and initialization
+
 var appConfig = {
     apiKey: "AIzaSyDCbQb8aIds-apr9gn4MySIoKBP7Ptqc1w",
     authDomain: "trainscheduler-d2582.firebaseapp.com",
@@ -11,6 +13,8 @@ var appConfig = {
 firebase.initializeApp(appConfig);
 
 var db = firebase.database();
+
+//functions
 
 function updateTime() {
     var cTime = moment().format("HH:mm");
@@ -33,12 +37,42 @@ function updateArrivalTime() {
     })
 }
 
-updateTime();
+function buildTable(childSnap) {
+    $("#schedule").empty();
+    var hide = "";
+    console.log(childSnap.val());
+    var dbVals = childSnap.val();
+    for (x in dbVals) {
+        var trainName = dbVals[x].tName;
+        var trainDestination = dbVals[x].tDest;
+        var trainFirstTime = dbVals[x].tFTime;
+        var trainFreq = dbVals[x].tFreq;
 
-setInterval(function() {
-    updateTime();
-    updateArrivalTime()
-}, 1000);
+        if (location.href.indexOf("admin.html") < 0) {
+            hide = "hide"
+        }
+        var newTR = $("<tr>");
+        newTR.append(`<button class='remove btn ${hide}' data-name='${trainName}'>X</button>`);
+        newTR.append(`<td>${trainName}</td>`);
+        newTR.append(`<td>${trainDestination}</td>`);
+        newTR.append(`<td class='firstTime ${hide}'>${trainFirstTime}</td>`);
+        newTR.append(`<td class='freq'>${trainFreq}</td>`);
+        newTR.append(`<td class='nextTrain'></td>`);
+        newTR.append(`<td class='nextTrainMin'></td>`);
+        $("#schedule").append(newTR);
+    }
+
+    updateArrivalTime();
+}
+
+//Listeners
+$(document).on("click", ".remove", function() {
+    var name = $(this).attr("data-name");
+    db.ref(name).remove();
+    db.ref().once("value").then(function(childSnap) {
+        buildTable(childSnap);
+    });
+});
 
 $("#addTrain").click(function(e) {
     e.preventDefault();
@@ -58,45 +92,20 @@ $("#addTrain").click(function(e) {
         }
         db.ref(tName).set(data);
         $("input.data").val("");
+        $("#tName").focus();
     }
 });
 
-function buildTable(childSnap) {
-    $("#schedule").empty();
-    var hide = "";
-    console.log(childSnap.val());
-    var dbVals = childSnap.val();
-    for (x in dbVals) {
-        var trainName = dbVals[x].tName;
-        var trainDestination = dbVals[x].tDest;
-        var trainFirstTime = dbVals[x].tFTime;
-        var trainFreq = dbVals[x].tFreq;
-
-        if (location.href.indexOf("admin.html") < 0) {
-            hide = "hide"
-        }
-        var newTR = $("<tr>");
-        newTR.append(`<button class='remove btn ${hide}' data-name=${trainName}>X</button>`);
-        newTR.append(`<td>${trainName}</td>`);
-        newTR.append(`<td>${trainDestination}</td>`);
-        newTR.append(`<td class='firstTime ${hide}'>${trainFirstTime}</td>`);
-        newTR.append(`<td class='freq'>${trainFreq}</td>`);
-        newTR.append(`<td class='nextTrain'></td>`);
-        newTR.append(`<td class='nextTrainMin'></td>`);
-        $("#schedule").append(newTR);
-    }
-
-    updateArrivalTime();
-}
 
 db.ref().on("value", function(childSnap) {
     buildTable(childSnap);
 });
 
-$(document).on("click", ".remove", function() {
-    var name = $(this).attr("data-name");
-    db.ref(name).remove();
-    db.ref().once("value").then(function(childSnap) {
-        buildTable(childSnap);
-    });
-});
+//Puts the current time on the screen.
+updateTime();
+
+//Interval to update the Current Time and the Arrival Time/Mins every second.
+setInterval(function() {
+    updateTime();
+    updateArrivalTime()
+}, 1000);
