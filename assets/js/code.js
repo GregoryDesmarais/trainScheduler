@@ -17,8 +17,28 @@ function updateTime() {
     $("#cTime").text(cTime);
 }
 
+function updateArrivalTime() {
+    $("tr").each(function() {
+        var trainFirstTime = $(this).find(".firstTime");
+        var trainFreq = $(this).find(".freq");
+        var nextTrain = $(this).find(".nextTrain");
+        var nextTrainMin = $(this).find(".nextTrainMin");
+
+        var firstTimeConverted = moment(trainFirstTime.text(), "HH:mm").subtract(1, "years");
+        var difTime = moment().diff(moment(firstTimeConverted), "minutes");
+        var tRemain = difTime % trainFreq.text();
+        nextTrainMin.text(trainFreq.text() - tRemain);
+        nextTrain.text(moment().add(nextTrainMin.text(), "minutes").format("HH:mm"));
+
+    })
+}
+
 updateTime();
-setInterval(updateTime, 1000);
+
+setInterval(function() {
+    updateTime();
+    updateArrivalTime()
+}, 1000);
 
 $("#addTrain").click(function(e) {
     e.preventDefault();
@@ -42,11 +62,6 @@ $("#addTrain").click(function(e) {
 });
 
 
-// 16 - 00 = 16 (Currnet minutes, minus beginning minutes)
-// 16 % 3 = 1 (Modulus is the remainder) result from above, mod frequency time
-// 3 - 1 = 2 minutes away frequency minus result from mod
-// 2 + 3:16 = 3:18 add above result to current time.
-
 db.ref().on("child_added", function(childSnap) {
     console.log(childSnap.val());
     var dbVals = childSnap.val();
@@ -56,19 +71,13 @@ db.ref().on("child_added", function(childSnap) {
     var trainFirstTime = dbVals.tFTime;
     var trainFreq = dbVals.tFreq;
 
-    var firstTimeConverted = moment(trainFirstTime, "HH:mm").subtract(1, "years");
-    var difTime = moment().diff(moment(firstTimeConverted), "minutes");
-    var tRemain = difTime % trainFreq;
-    var minTillNextTrain = trainFreq - tRemain;
-    var nextTrain = moment().add(minTillNextTrain, "minutes").format("HH:mm");
-
     var newTR = $("<tr>");
     newTR.append(`<td>${trainName}</td>`);
     newTR.append(`<td>${trainDestination}</td>`);
     newTR.append(`<td class='firstTime'>${trainFirstTime}</td>`);
     newTR.append(`<td class='freq'>${trainFreq}</td>`);
-    newTR.append(`<td>${nextTrain}</td>`);
-    newTR.append(`<td>${minTillNextTrain}</td>`);
+    newTR.append(`<td class='nextTrain'></td>`);
+    newTR.append(`<td class='nextTrainMin'></td>`);
     $("#schedule").append(newTR);
-
+    updateArrivalTime();
 });
