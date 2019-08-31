@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Train Scheduler</title>
+    <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous'>
+    <script src='https://code.jquery.com/jquery-3.4.1.min.js'></script>
+    <script src="https://www.gstatic.com/firebasejs/6.5.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.5.0/firebase-database.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js" integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+    <h2>Current Time - <span id='cTime'></span></h2>
+    <form>
+        <div class='container text-right'>
+            <div class="row">
+                <div class="col-sm-2">
+                    Train Name
+                </div>
+                <div class="col-sm-2">
+                    <input id='tName'>
+                </div>
+                <div class="col-sm-2">
+                    Destination
+                </div>
+                <div class="col-sm-2">
+                    <input id='tDest'>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    First Train Time
+                </div>
+                <div class="col-sm-2">
+                    <input id="tFTIme">
+                </div>
+                <div class="col-sm-2">
+                    Frequency
+                </div>
+                <div class="col-sm-2">
+                    <input type="text" id="tFreq">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-5 my-4">
+                    <input type="submit" value="Add Train" id="addTrain">
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="container">
+        <table id="schedule">
+            <tr>
+                <th>Train Name</th>
+                <th>Destination</th>
+                <th>Frequency (min)</th>
+                <th>Next Arrival Time</th>
+                <th>Next Arrival In (mins)</th>
+            </tr>
+        </table>
+
+    </div>
+</body>
+<script src="assets/js/code.js"></script>
+
+</html>

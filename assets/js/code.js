@@ -10,3 +10,16 @@ var firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+
+function updateTime() {
+    var cTime = moment().format("hh:mm");
+    $("#cTime").text(cTime);
+}
+
+updateTime();
+setInterval(updateTime, 1000);
+
+$("#addTrain").click(function(e) {
+    e.preventDefault();
+
+})
