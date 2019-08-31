@@ -2,5 +2,10 @@ table,
 tr,
 th,
 td {
-    border: solid black 1px
+    border: solid black 1px;
+    text-align: center
+}
+
+td.firstTime {
+    display: none;
 }
