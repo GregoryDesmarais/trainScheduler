@@ -101,11 +101,15 @@ db.ref().on("value", function(childSnap) {
     buildTable(childSnap);
 });
 
+
+
 //Puts the current time on the screen.
 updateTime();
 
 //Interval to update the Current Time and the Arrival Time/Mins every second.
 setInterval(function() {
-    updateTime();
-    updateArrivalTime()
+    if (moment().format("ss") === "00") {
+        updateTime();
+        updateArrivalTime()
+    }
 }, 1000);
