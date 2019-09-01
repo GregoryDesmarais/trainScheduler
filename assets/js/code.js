@@ -52,7 +52,8 @@ function buildTable(childSnap) {
             hide = "hide"
         }
         var newTR = $("<tr>");
-        newTR.append(`<button class='remove btn ${hide}' data-name='${trainName}'>X</button>`);
+        newTR.append(`<button class='remove btn btn-danger ${hide}' data-name='${trainName}'>X</button>`);
+        newTR.append(`<button class='edit btn btn-warning ${hide}' data-name='${trainName}'>edit</button>`);
         newTR.append(`<td>${trainName}</td>`);
         newTR.append(`<td>${trainDestination}</td>`);
         newTR.append(`<td class='firstTime ${hide}'>${trainFirstTime}</td>`);
@@ -71,6 +72,16 @@ $(document).on("click", ".remove", function() {
     db.ref(name).remove();
     db.ref().once("value").then(function(childSnap) {
         buildTable(childSnap);
+    });
+});
+$(document).on("click", ".edit", function() {
+    var name = $(this).attr("data-name");
+    db.ref(name).once("value").then(function(childSnap) {
+        var values = childSnap.val();
+        $("#tDest").val(values.tDest);
+        $("#tFTime").val(values.tFTime);
+        $("#tName").val(values.tName);
+        $("#tFreq").val(values.tFreq);
     });
 });
 
